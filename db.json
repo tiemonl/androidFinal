@@ -1,0 +1,26 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Dealing with Clark",
+      "authorId": 2
+    },
+    {
+      "id": 2,
+      "title": "Understanding Michael",
+      "authorId": 1
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "username": "tiemonl",
+      "title": "Liam Tiemon"
+    },
+    {
+      "id": 2,
+      "username": "clarkm",
+      "title": "Michael Clark"
+    }
+  ]
+}
