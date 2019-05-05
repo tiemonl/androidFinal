@@ -1,36 +1,42 @@
 package com.example.androidfinal
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import com.google.gson.GsonBuilder
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.internal.schedulers.IoScheduler
-import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
 
-    private var BASE_URL = "https://my-json-server.typicode.com/tiemonl/androidFinal/"
+class MainActivity : AppCompatActivity(), ArticleItemAdapter.ArticleClickListener {
+
+
+    var articlesData: List<Article> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rv__list_posts.layoutManager = LinearLayoutManager(this)
+        val recyclerView: RecyclerView = findViewById(R.id.rv_list_articles)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        val apiInterface: ApiInterface = ApiClient().getApiClient()!!.create(ApiInterface::class.java)
+        apiInterface.getAllArticles().enqueue(object : Callback<List<Article>> {
+            override fun onResponse(call: Call<List<Article>>, response: Response<List<Article>>) {
+                articlesData = response.body()!!
+                recyclerView.adapter = ArticleItemAdapter(response.body()!!, this@MainActivity)
+            }
 
-        val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .baseUrl(BASE_URL).build()
+            override fun onFailure(call: Call<List<Article>>?, t: Throwable?) {
+            }
+        })
 
-        val postsApi = retrofit.create(INetworkAPI::class.java)
+    }
 
-        val response = postsApi.getAllArticles()
-
-        response.observeOn(AndroidSchedulers.mainThread()).subscribeOn(IoScheduler()).subscribe {
-            rv__list_posts.adapter = PostItemAdapter(it, this)
-        }
+    override fun getItem(position: Int) {
+            Toast.makeText(this@MainActivity, articlesData[position].title, Toast.LENGTH_SHORT).show()
     }
 }
