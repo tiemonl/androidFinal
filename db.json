@@ -2,12 +2,17 @@
   "articles": [
     {
       "id": 1,
-      "title": "Dealing with Clark",
+      "title": "Dealing With Clark",
       "authorId": 2
     },
     {
       "id": 2,
       "title": "Understanding Michael",
+      "authorId": 1
+    },
+    {
+      "id": 3,
+      "title": "Becoming One With Michael",
       "authorId": 1
     }
   ],
