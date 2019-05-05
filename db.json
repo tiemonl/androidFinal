@@ -3,16 +3,19 @@
     {
       "id": 1,
       "title": "Dealing With Clark",
+      "pages": "69",
       "authorId": 2
     },
     {
       "id": 2,
       "title": "Understanding Michael",
+      "pages": "911",
       "authorId": 1
     },
     {
       "id": 3,
       "title": "Becoming One With Michael",
+      "pages": "420",
       "authorId": 1
     }
   ],

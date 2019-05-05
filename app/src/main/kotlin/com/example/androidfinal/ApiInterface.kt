@@ -6,7 +6,7 @@ import retrofit2.http.Path
 
 interface ApiInterface {
     @GET("articles/")
-    fun getAllArticles(): Call<List<Article>>
+    fun getAllArticles(): Call<ArrayList<Article>>
 
     @GET("authors/{authorId}")
     fun getTripDetails(@Path("authorId") authorId: Int): Call<ArticleAuthor>

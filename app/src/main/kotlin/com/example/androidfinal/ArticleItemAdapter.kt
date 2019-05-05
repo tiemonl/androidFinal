@@ -5,23 +5,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.article_item_layout.view.*
 
-class ArticleItemAdapter(val articleList: List<Article>, val clickListener: ArticleClickListener) :
-
+class ArticleItemAdapter(
+    private val articleList: List<Article>,
+    private val clickListener: ArticleClickListener
+) :
     RecyclerView.Adapter<ArticleItemAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.article_item_layout, parent, false)
-        return ViewHolder(view, clickListener)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        LayoutInflater.from(parent.context).inflate(R.layout.article_item_layout, parent, false).let {
+            ViewHolder(it, clickListener)
+        }
 
-    override fun getItemCount(): Int {
-        return articleList.size
-    }
+    override fun getItemCount() = articleList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemView.txtArticleTitle.text = articleList[position].title
+        articleList.getOrNull(position)?.also {
+            holder.articleTitleView.text = it.title
+            holder.articlePageView.text = it.pages
+            holder.articleTitleView.setOnClickListener {
+                clickListener.getItem(position)
+            }
+        }
     }
 
     interface ArticleClickListener {
@@ -29,12 +34,7 @@ class ArticleItemAdapter(val articleList: List<Article>, val clickListener: Arti
     }
 
     class ViewHolder(itemView: View, var itemClick: ArticleClickListener) : RecyclerView.ViewHolder(itemView) {
-        var txtArticleTitle: TextView = itemView.findViewById(R.id.txtArticleTitle)
-        fun bindData(articlesList: List<Article>?, position: Int) {
-            txtArticleTitle.text = articlesList!![position].title
-            itemView.setOnClickListener {
-                itemClick.getItem(adapterPosition)
-            }
-        }
+        val articleTitleView: TextView = itemView.findViewById(R.id.txtArticleTitle)
+        val articlePageView: TextView = itemView.findViewById(R.id.txtArticlePages)
     }
 }

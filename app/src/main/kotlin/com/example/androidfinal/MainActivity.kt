@@ -14,7 +14,7 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity(), ArticleItemAdapter.ArticleClickListener {
 
 
-    var articlesData: List<Article> = ArrayList()
+    var articlesData: ArrayList<Article> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,19 +24,19 @@ class MainActivity : AppCompatActivity(), ArticleItemAdapter.ArticleClickListene
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         val apiInterface: ApiInterface = ApiClient().getApiClient()!!.create(ApiInterface::class.java)
-        apiInterface.getAllArticles().enqueue(object : Callback<List<Article>> {
-            override fun onResponse(call: Call<List<Article>>, response: Response<List<Article>>) {
+        apiInterface.getAllArticles().enqueue(object : Callback<ArrayList<Article>> {
+            override fun onResponse(call: Call<ArrayList<Article>>, response: Response<ArrayList<Article>>) {
                 articlesData = response.body()!!
                 recyclerView.adapter = ArticleItemAdapter(response.body()!!, this@MainActivity)
             }
 
-            override fun onFailure(call: Call<List<Article>>?, t: Throwable?) {
+            override fun onFailure(call: Call<ArrayList<Article>>?, t: Throwable?) {
             }
         })
-
+        Toast.makeText(this, "Hello world", Toast.LENGTH_LONG).show()
     }
 
     override fun getItem(position: Int) {
-            Toast.makeText(this@MainActivity, articlesData[position].title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, articlesData[position].authorId.toString(), Toast.LENGTH_SHORT).show()
     }
 }
