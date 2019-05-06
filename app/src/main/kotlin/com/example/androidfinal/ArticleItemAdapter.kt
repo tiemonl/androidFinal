@@ -22,8 +22,11 @@ class ArticleItemAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         articleList.getOrNull(position)?.also {
             holder.articleTitleView.text = it.title
-            holder.articlePageView.text = it.pages
+            holder.articlePageView.text = "Pages: ${it.pages}"
             holder.articleTitleView.setOnClickListener {
+                clickListener.getItem(position)
+            }
+            holder.articlePageView.setOnClickListener{
                 clickListener.getItem(position)
             }
         }

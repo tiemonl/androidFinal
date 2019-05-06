@@ -1,5 +1,6 @@
 package com.example.androidfinal
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,19 @@ class MainActivity : AppCompatActivity(), ArticleItemAdapter.ArticleClickListene
     }
 
     override fun getItem(position: Int) {
-            Toast.makeText(this@MainActivity, articlesData[position].authorId.toString(), Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, ArticleAuthorActivity::class.java)
+
+        val apiInterface: ApiInterface = ApiClient().getApiClient()!!.create(ApiInterface::class.java)
+        apiInterface.getAuthorDetails(articlesData[position].authorId).enqueue(object : Callback<ArticleAuthor>{
+            override fun onResponse(call: Call<ArticleAuthor>, response: Response<ArticleAuthor>) {
+                val author: ArticleAuthor = response.body()!!
+                intent.putExtra("author", author)
+                startActivity(intent)
+            }
+
+            override fun onFailure(call: Call<ArticleAuthor>, t: Throwable) {
+            }
+
+        })
     }
 }

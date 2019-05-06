@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">androidFinal</string>
+    <string name="author">AUTHOR:</string>
+    <string name="user_name">User Name</string>
 </resources>

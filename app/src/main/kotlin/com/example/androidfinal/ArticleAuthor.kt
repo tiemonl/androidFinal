@@ -1,7 +1,9 @@
 package com.example.androidfinal
 
+import java.io.Serializable
+
 data class ArticleAuthor(
-    val id: Int,
-    val title: String,
-    val username: String
-)
+    var id: Int,
+    var title: String,
+    var username: String
+) : Serializable
